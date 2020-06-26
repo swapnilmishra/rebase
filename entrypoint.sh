@@ -73,4 +73,4 @@ git merge origin/$BASE_BRANCH
 git commit -m "Merge branch $BASE_BRANCH into $HEAD_BRANCH"
 
 # push back
-git push $HEAD_BRANCH
+git push
