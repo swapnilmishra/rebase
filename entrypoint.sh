@@ -70,7 +70,7 @@ set -o xtrace
 git fetch origin $BASE_BRANCH
 git fetch fork $HEAD_BRANCH
 
-# do the rebase
+# do the merge
 git checkout -b $HEAD_BRANCH fork/$HEAD_BRANCH
 git merge origin/$BASE_BRANCH
 git commit -m "Merge branch $BASE_BRANCH into $HEAD_BRANCH"
