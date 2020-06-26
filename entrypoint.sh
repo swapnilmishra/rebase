@@ -62,18 +62,15 @@ git remote set-url origin https://x-access-token:$COMMITTER_TOKEN@github.com/$GI
 git config --global user.email "$USER_EMAIL"
 git config --global user.name "$USER_NAME"
 
-git remote add fork https://x-access-token:$COMMITTER_TOKEN@github.com/$HEAD_REPO.git
-
 set -o xtrace
 
 # make sure branches are up-to-date
 git fetch origin $BASE_BRANCH
-git fetch fork $HEAD_BRANCH
 
 # do the merge
-git checkout -b $HEAD_BRANCH fork/$HEAD_BRANCH
+git checkout $HEAD_BRANCH
 git merge origin/$BASE_BRANCH
 git commit -m "Merge branch $BASE_BRANCH into $HEAD_BRANCH"
 
 # push back
-git push fork $HEAD_BRANCH
+git push $HEAD_BRANCH
