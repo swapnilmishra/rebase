@@ -36,17 +36,11 @@ USER_NAME=$(echo "$user_resp" | jq -r ".name")
 if [[ "$USER_NAME" == "null" ]]; then
 	USER_NAME=$USER_LOGIN
 fi
-USER_NAME="${USER_NAME} (Rebase PR Action)"
+USER_NAME="${USER_NAME} (Merge base PR Action)"
 
 USER_EMAIL=$(echo "$user_resp" | jq -r ".email")
 if [[ "$USER_EMAIL" == "null" ]]; then
 	USER_EMAIL="$USER_LOGIN@users.noreply.github.com"
-fi
-
-if [[ "$(echo "$pr_resp" | jq -r .rebaseable)" != "true" ]]; then
-	echo "GitHub doesn't think that the PR is rebaseable!"
-	echo "API response: $pr_resp"
-	exit 1
 fi
 
 if [[ -z "$BASE_BRANCH" ]]; then
@@ -78,7 +72,8 @@ git fetch fork $HEAD_BRANCH
 
 # do the rebase
 git checkout -b $HEAD_BRANCH fork/$HEAD_BRANCH
-git rebase origin/$BASE_BRANCH
+git merge origin/$BASE_BRANCH
+git commit -m "Merge branch $BASE_BRANCH into $HEAD_BRANCH"
 
 # push back
 git push --force-with-lease fork $HEAD_BRANCH
